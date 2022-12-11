@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Firstcontroller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -38,5 +39,9 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::get('/add_school', [SchoolController::class, 'add_school'])->name('add_school');
     Route::post('/schoolsave', [SchoolController::class, 'schoolsave'])->name('schoolsave');
     Route::get('/edit-school/{id}', [SchoolController::class, 'edit_school'])->name('edit-school');
+    Route::get('/new_order', [OrderController::class, 'index'])->name('new_order');
+    Route::post('/ordertbale', [OrderController::class, 'get_ordertable'])->name('ordertbale');
+    Route::post('/saveorder_details', [OrderController::class, 'save_order_details'])->name('saveorder_details');
+
 
 });
