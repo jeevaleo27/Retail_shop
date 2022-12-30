@@ -219,6 +219,42 @@
     </div>
   </div>
 
+  <!-- Advance Amount modal -->
+  <div id="exportdoc_Popup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content shadow-dark-80">
+        <div class="modal-header border-0 pb-0 align-items-start ps-4">
+          <h5 class="modal-title pb-3" id="">Prize Model</h5>
+          <button type="button" class="btn btn-icon p-0" data-bs-dismiss="modal" aria-label="Close">
+            <svg data-name="icons/tabler/close" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <rect data-name="Icons/Tabler/Close background" width="16" height="16" fill="none"></rect>
+              <path d="M.82.1l.058.05L6,5.272,11.122.151A.514.514,0,0,1,11.9.82l-.05.058L6.728,6l5.122,5.122a.514.514,0,0,1-.67.777l-.058-.05L6,6.728.878,11.849A.514.514,0,0,1,.1,11.18l.05-.058L5.272,6,.151.878A.514.514,0,0,1,.75.057Z" transform="translate(2 2)" fill="#1e1e1e"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body pt-2 px-4 mt-2">
+          <form action="#"  name="advance_amount_from" id="advance_amount_from">
+            <div class="col-md-6">
+              <label for="schoolname" class="form-label"><b>Total Amount : </b><span class="tatal_amount"></span> </label>
+              <input type="hidden" class="form-control form-control-sm" id="_token" name="_token" title="Enter User Name" data-toggle="tooltip" data-placement="right" value="{{ csrf_token() }}"/>
+              <input type="hidden" class="form-control form-control-sm" value=""  id="orderUID" name="orderUID" title="Enter phone Number" data-toggle="tooltip" data-placement="right"/>
+            </div>
+            <div class="col-md-6">
+              <label for="schoolname" class="form-label">Advance Amount</label>
+              <input type="text" class="form-control form-control-sm " value=""  id="advance_amount" name="advance_amount" title="Enter Avance Number" data-toggle="tooltip" data-placement="right"/>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary px-2 ms-2 save_advance_amount" id="save_advance_amount"><span class="px-1">Save</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <script src="{{asset('assets_new/plugins/jquery-ui/jquery-ui.min.js')}}"></script> -->
+
   <script>
     $(document).ready(function(){
       $('.select2_singleselect').select2({});
@@ -269,6 +305,7 @@
         success: function (response) {
           if(response.Status == 0)
           { 
+
             swal({
               text: "Order Placed Successfully :)",
               icon: "success",
@@ -290,7 +327,13 @@
             }).then(function (confirm) {
 
               if (confirm == "catch") {
-                window.location.href = '{{route('new_order')}}';
+                $('.tatal_amount').html(response.totalamount);
+                $('#orderUID').val(response.orderID);
+                $("#exportdoc_Popup").modal({
+                  backdrop: 'static',
+                  keyboard: false
+                });
+                $('#exportdoc_Popup').modal('show');
               }
 
             }, function (dismiss) {});
@@ -325,6 +368,59 @@
               },
             });
           }
+          button.html(button_text);
+          button.val(button_val);
+          button.prop('disabled',false);
+        }
+      });
+
+    });
+
+    $(document).off("click",".save_advance_amount").on("click",".save_advance_amount", function(event) {
+
+      var formdata = $('#advance_amount_from').serialize(); 
+      /*button = $(this);
+      button_val = $(this).val();
+      button_text = $(this).html();*/
+      $.ajax({
+        type: "POST",
+        url: "{{route('save_advance_amount')}}",
+        data: formdata,
+        dataType:'json',
+        beforeSend: function () {
+          button.prop("disabled", true);
+        },
+
+        success: function (response) {
+          if(response.Status == 1)
+          { 
+            swal({
+              text: "Amount saved Successfully :)",
+              icon: "success",
+              showCancelButton: true, 
+              buttonsStyling: false,
+              closeOnClickOutside: false,
+              allowOutsideClick: false,
+              showLoaderOnConfirm: true,
+              position: 'top-end',
+              buttons: {
+                cancel: {
+                  text: "Close",
+                  value: "catch",
+                  visible: true,
+                  className: "btn-sm",
+                  closeModal: true,
+                }
+              },
+            }).then(function (confirm) {
+
+              if (confirm == "catch") {
+               window.location.href = '{{route('new_order')}}';
+             }
+
+           }, function (dismiss) {});
+          }
+
           button.html(button_text);
           button.val(button_val);
           button.prop('disabled',false);

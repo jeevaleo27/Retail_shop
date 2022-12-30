@@ -154,6 +154,7 @@ public function save_order_details(Request $request){
         $order_type_count  = $_POST['order_type_count'];
         $Fixed_price       = $_POST['Fixed_price'];
 
+        $total_amount=0;
         foreach ($order_type_id as $key =>$value) {
 
             $order_type_details = array( 
@@ -164,10 +165,15 @@ public function save_order_details(Request $request){
                 "Created_by"    => $user
             );
 
-            $orderID=OrderModel::save_order_type($order_type_details);
+            $total_amount=$total_amount+$Fixed_price[$key];
+
+            $ordertypeID=OrderModel::save_order_type($order_type_details);
         }
 
-        echo json_encode(['Status'=>0]);exit; 
+        $Order_prize = array('Total_amount' => $total_amount);
+        $order_prize_data = DB::table('mOrder')->where("OrderUID",$orderID)->update($Order_prize);
+
+        echo json_encode(['Status'=>0,"totalamount"=>$total_amount,"orderID"=>$orderID]);exit; 
 
     }
     return response()->json(['Status'=>1,'error'=>$validator->errors()->all()]);
@@ -185,5 +191,43 @@ public function validation(array $request)
     ]);
 }
 
+
+public function stitch_order_view(Request $request){
+
+    $this->data['page_number']=4;
+    $this->data['orderlist']=OrderModel::getstitchlist();
+    return view('order.stitchinglist',$this->data);  
+}
+
+public function stitch_order_fetch($id){
+
+    $this->data['page_number']=4;
+    $this->data['stitching_orderdetail']=OrderModel::getstitchdetail(base64_decode($id));
+    $this->data['stitching_ordertype_detail']=OrderModel::getstitch_ordertypedetail(base64_decode($id));
+    $this->data['order_stauts']=OrderModel::get_status();
+    return view('order.stitchingorderview',$this->data);
+}
+public function order_stauts_save(){
+
+    $orderUID = $_POST['orderUID'];
+    $order_stautsUID = $_POST['order_stauts'];
+
+    $status_update=OrderModel::update_order_status($orderUID,$order_stautsUID);
+
+    if($status_update){
+        return response()->json(['Status'=>0,'success'=>'Order Status Updated :).']);
+    }else{
+        return response()->json(['Status'=>1,'success'=>'Order Status Update Failed :(']);
+    }
+ 
+}
+
+public function save_advance_amount(){
+
+$Order_prize = array('Advance_Amount' => $_POST['advance_amount']);
+$order_prize_data = DB::table('mOrder')->where("OrderUID", $_POST['orderUID'])->update($Order_prize);
+echo json_encode(['Status'=>$order_prize_data]);exit; 
+
+}
 
 }

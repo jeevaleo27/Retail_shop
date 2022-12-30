@@ -42,6 +42,10 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::get('/new_order', [OrderController::class, 'index'])->name('new_order');
     Route::post('/ordertbale', [OrderController::class, 'get_ordertable'])->name('ordertbale');
     Route::post('/saveorder_details', [OrderController::class, 'save_order_details'])->name('saveorder_details');
+    Route::get('/stitch_list', [OrderController::class, 'stitch_order_view'])->name('order_list');
+    Route::get('/stitch_order_detail/{id}', [OrderController::class, 'stitch_order_fetch'])->name('view_order_details');
+    Route::post('/order_stauts_save', [OrderController::class, 'order_stauts_save'])->name('order_stauts_save');
+    Route::post('/save_advance_amount', [OrderController::class, 'save_advance_amount'])->name('save_advance_amount');
 
 
 });
