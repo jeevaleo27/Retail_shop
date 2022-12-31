@@ -230,4 +230,11 @@ echo json_encode(['Status'=>$order_prize_data]);exit;
 
 }
 
+public function delete_stitching_order(){
+   
+    $Order_prize = array('is_delete' => 1);
+    $order_prize_data = DB::table('mOrder')->where("OrderUID", base64_decode($_POST['orderid']))->update($Order_prize);
+    echo json_encode(['Status'=>$order_prize_data]);exit; 
+}
+
 }

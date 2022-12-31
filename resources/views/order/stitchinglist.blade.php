@@ -117,11 +117,11 @@
     														<path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"></path>
     													</svg><span class="ms-2">View</span>
     												</a>
-    												<a href="{{route('edit-school',base64_encode($item->OrderUID))}}" class="dropdown-item" style="color:red;">
-    													<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    												<a class="dropdown-item delete_order_data" data-orderid="{{base64_encode($item->OrderUID)}}" id="delete_order" style="color:red;">
+    													<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-trash"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     														<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
     														<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-    													</svg><span class="ms-2">Delete</span>
+    													</svg><span class="ms-2">Delete data</span>
     												</a>
     											</div>
     										</div>
@@ -132,6 +132,7 @@
     								
     							</tbody>
     						</table>
+    						<input type="hidden" class="form-control form-control-sm" id="_token" name="_token" title="Enter User Name" data-toggle="tooltip" data-placement="right" value="{{ csrf_token() }}"/>
     					</div>
     				</div>
     			</div>
@@ -148,6 +149,60 @@
     	$(document).ready(function () {
     		$('#stitching_list_table').DataTable();
     	});
+
+
+
+    	$('.delete_order_data').click(function(e){
+
+
+    		e.preventDefault();
+
+
+    		  var formdata = $(this).attr('data-orderid'); 
+    		  var _token = $('#_token').val(); 
+/*alert(formdata);*/
+
+  $.ajax({
+    type: "POST",
+   url: "{{route('delete_stitching_order')}}",
+    data: {orderid:formdata,_token:_token},
+    dataType:'json',
+   /* beforeSend: function () {
+      button.prop("disabled", true);
+    },*/
+
+    success: function (response) {
+      if(response.Status == 1)
+      { 
+        swal({
+          text: "Order Deleted successfully :)",
+          icon: "success",
+          showCancelButton: true, 
+          buttonsStyling: false,
+          closeOnClickOutside: false,
+          allowOutsideClick: false,
+          showLoaderOnConfirm: true,
+          position: 'top-end',
+          buttons: {
+            cancel: {
+              text: "Close",
+              value: "catch",
+              visible: true,
+              className: "btn-sm",
+              closeModal: true,
+            },
+          },
+        }).then(function (confirm) {
+
+          if (confirm == "catch") {
+            window.location.reload();
+          }
+
+        }, function (dismiss) {});
+      }
+}})
+    	});
+
     </script>
 
 
