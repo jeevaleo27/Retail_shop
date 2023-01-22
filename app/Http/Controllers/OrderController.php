@@ -165,7 +165,7 @@ public function save_order_details(Request $request){
                 "Created_by"    => $user
             );
 
-            $total_amount=$total_amount+$Fixed_price[$key];
+            $total_amount=$total_amount+($Fixed_price[$key]*$order_type_count[$key]);
 
             $ordertypeID=OrderModel::save_order_type($order_type_details);
         }
@@ -212,9 +212,40 @@ public function order_stauts_save(){
     $orderUID = $_POST['orderUID'];
     $order_stautsUID = $_POST['order_stauts'];
 
+//  $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+
     $status_update=OrderModel::update_order_status($orderUID,$order_stautsUID);
 
     if($status_update){
+
+        if($order_stautsUID== 6 ){
+
+
+            $stitching_list = DB::table('mOrder')->select('tCustomer.PhoneNo')->leftjoin('tCustomer','tCustomer.CustomerUID','=','mOrder.CustomerUID')->where("mOrder.OrderUID",$orderUID)->get();
+
+       /* try {
+   
+            $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+            $client = new \Nexmo\Client($basic);
+   
+            $receiverNumber = $stitching_list[0]->PhoneNo;
+            $message = "You uniform order is ready to delivery ";
+   
+            $message = $client->message()->send([
+                'to' => $receiverNumber,
+                'from' => 'Vonage APIs',
+                'text' => $message
+            ]);
+   
+            // dd('SMS Sent Successfully.');
+               
+        } catch (Exception $e) {
+            dd("Error: ". $e->getMessage());
+        }*/
+    }
+
+
+
         return response()->json(['Status'=>0,'success'=>'Order Status Updated :).']);
     }else{
         return response()->json(['Status'=>1,'success'=>'Order Status Update Failed :(']);
