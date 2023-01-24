@@ -102,4 +102,12 @@ class ReadyMadeController extends Controller
 
         return view('readymade.readymade_size_add',$this->data);
     }
+
+    public function readymade_neworder(){
+        $this->data['page_number']=6;
+        $this->data['SchoolInfo']=School::getSchoolDetails();
+        /*$this->data['readymadesizelist']=ReadymadeModel::getReadyMadeSizeDetails();*/
+        return view('readymade.readymade_orderpage',$this->data);
+
+    }
 }
