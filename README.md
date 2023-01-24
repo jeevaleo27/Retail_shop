@@ -69,7 +69,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 
 
-run the below code to run the laravel existing project
+**run the below code to run the laravel existing project**
 
 Run composer install on your cmd or terminal
 Copy .env.example file to .env on the root folder
