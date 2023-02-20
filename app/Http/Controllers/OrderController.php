@@ -99,7 +99,7 @@ class OrderController extends Controller
         </td>
 
         <td class="">
-        &#8377 <span  class="order_type_price" name="">  </sapn>
+        &#8377 <span  class="order_type_price" name="">  </span>
         </td>
 
         <td class="text-center delete_order_type" id="delete_order_type">

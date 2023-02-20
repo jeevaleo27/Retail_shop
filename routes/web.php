@@ -56,6 +56,10 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/readymade_size_save', [ReadyMadeController::class, 'readymadesizesave'])->name('readymade_size_save');
     Route::get('/edit-readymadesize/{id}/{id2}', [ReadyMadeController::class, 'edit_readymadesize'])->name('edit-readymadesize');
     Route::get('/new_readymaadeorder', [ReadyMadeController::class, 'readymade_neworder'])->name('new_readymaadeorder');
+    Route::post('/fetch_ordertype', [ReadyMadeController::class, 'fetch_ordertype'])->name('fetch_ordertype');
+    Route::post('/readdymade_ordertbale', [ReadyMadeController::class, 'readdymade_ordertbale'])->name('readdymade_ordertbale');
+    Route::post('/get_size_rise', [ReadyMadeController::class, 'get_size_rise'])->name('get_size_rise');
+    Route::post('/savereadymadeorder_details', [ReadyMadeController::class, 'savereadymadeorder_details'])->name('savereadymadeorder_details');
 
 
 });
