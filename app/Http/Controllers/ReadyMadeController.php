@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ReadymadeModel;
 use App\Models\School;
+use App\Models\OrderModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -200,49 +201,47 @@ class ReadyMadeController extends Controller
     $user = Auth::user()->id;
     if ($validator->passes()) 
     {
-     echo '<pre>';print_r($_POST);
-     echo '<pre>';print_r("test");exit;
+     /*echo '<pre>';print_r($_POST);
+     echo '<pre>';print_r("test");exit;*/
         $customer_details = array("CustomerName"    =>   $_POST['customername'],
-            "PhoneNo"    =>   $_POST['phoneno'],
+            "PhoneNo"       =>   $_POST['phoneno'],
             "WhatsAppNo"    =>   $_POST['phoneno'],
-            "Created_by" =>  $user);
+            "Created_by"    =>   $user);
 
         $CustomerID=OrderModel::save_customer($customer_details);
 
-        $Order_detail = array("CustomerUID" => $CustomerID,
-            "SchoolUID"    => $_POST['schooluid'],
-            "ClassUID"    => $_POST['classuid'],
-            "Status"    => 1,
-            "CreatedBy"    => $user,
-            "Order_Date"    => date('Y/m/d', strtotime($_POST['order_date'])),
-            "Due_Date"    => date('Y/m/d', strtotime($_POST['order_due_date'])));
+        $ReadyMadeOrder_detail = array("CustomerUID" => $CustomerID,
+            "SchoolUID"    =>  $_POST['schooluid'],
+            "CreatedBy"    =>  $user);
 
-        $orderID=OrderModel::save_order($Order_detail);
+        $readymade_orderID=OrderModel::save_ready_made_order($ReadyMadeOrder_detail);
 
-        $order_type_id     = $_POST['order_type_id'];
-        $order_type_count  = $_POST['order_type_count'];
-        $Fixed_price       = $_POST['Fixed_price'];
+        $order_type_id        = $_POST['order_type_id'];
+        $order_type_count     = $_POST['order_type_count'];
+        $Fixed_price          = $_POST['Fixed_price'];
+        $orderwise_size       = $_POST['orderwise_size'];
 
         $total_amount=0;
         foreach ($order_type_id as $key =>$value) {
 
-            $order_type_details = array( 
-                "OrderUID"    => $orderID,
-                "OrderType"    => $order_type_id[$key],
-                "Order_Qty"    => $order_type_count[$key],
-                "Prize"    => $Fixed_price[$key],
-                "Created_by"    => $user
+            $ready_made_order_type_details = array( 
+                "ReadyMadeOrderUID"     => $readymade_orderID,
+                "ReadyMadeOrderType"    => $order_type_id[$key],
+                "ReadyMadeOrder_Qty"    => $order_type_count[$key],
+                "ReadyMadeRateUID"    => $orderwise_size[$key],
+                "ReadyMadePrize"        => $Fixed_price[$key],
+                "Created_by"            => $user
             );
 
             $total_amount=$total_amount+($Fixed_price[$key]*$order_type_count[$key]);
 
-            $ordertypeID=OrderModel::save_order_type($order_type_details);
+            $ordertypeID=OrderModel::save_ready_made_order_type($ready_made_order_type_details);
         }
 
         $Order_prize = array('Total_amount' => $total_amount);
-        $order_prize_data = DB::table('mOrder')->where("OrderUID",$orderID)->update($Order_prize);
+        $order_prize_data = DB::table('tReadyMadeOrder')->where("ReadyMadeOrderUID",$readymade_orderID)->update($Order_prize);
 
-        echo json_encode(['Status'=>0,"totalamount"=>$total_amount,"orderID"=>$orderID]);exit; 
+        echo json_encode(['Status'=>0,"totalamount"=>$total_amount,"ReadyMadeOrderUID "=>$readymade_orderID]);exit; 
 
     }
     return response()->json(['Status'=>1,'error'=>$validator->errors()->all()]);

@@ -57,10 +57,21 @@ class OrderModel extends Model
 
     Protected function update_order_status($orderUID,$order_stautsUID){
 
-    $order_status = array('Status' => $order_stautsUID);
-    $Saved_status = DB::table('mOrder')->where("OrderUID",$orderUID)->update($order_status);
+        $order_status = array('Status' => $order_stautsUID);
+        $Saved_status = DB::table('mOrder')->where("OrderUID",$orderUID)->update($order_status);
 
-    return $Saved_status;
-}
+        return $Saved_status;
+    }
+
+    Protected function save_ready_made_order($ReadyMadeOrder_detail){
+        $orderUID =  DB::table('tReadyMadeOrder')->insertGetId($ReadyMadeOrder_detail);
+        return $orderUID;
+    }
+
+    Protected function save_ready_made_order_type($ready_made_order_type_details){
+
+        $orderUID =  DB::table('tReadyMadeOrderDetails')->insertGetId($ready_made_order_type_details);
+        return $orderUID;
+    }
 
 }
