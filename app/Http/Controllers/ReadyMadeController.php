@@ -75,6 +75,7 @@ class ReadyMadeController extends Controller
             $orderType=$_POST['orderType'];
             $readymadesize=$_POST['readymadesize'];
             $readymaderate=$_POST['readymaderate'];
+            $stitchcount=$_POST['stitchcount'];
             foreach ($readymadesize as $key => $value ) {
 
                     $readymadesize_array=array(
@@ -82,6 +83,7 @@ class ReadyMadeController extends Controller
                         "ReadyMadeOrderTypeUID"  =>$orderType, 
                         "Size_Material"  => $readymadesize[$key],
                         "Rate" => $readymaderate[$key],
+                        "StitchCount" => $stitchcount[$key],
                         "Created_by"  => $user
                     );
 

@@ -168,6 +168,11 @@
                               <input id="toolTip<?php echo $sequence ?>" name="readymaderate[]" type="text" class="form-control form-control-sm" value="<?php echo $readymadedatavalue->Rate ?>" required>
                             </div>
 
+                            <div class="col-md-3">
+                              <label for="" class="form-label">Stitch Count</label>
+                              <input id="toolTip<?php echo $sequence ?>" name="stitchcount[]" type="text" class="form-control form-control-sm" value="<?php echo $readymadedatavalue->StitchCount ?>" required>
+                            </div>
+
                             <div class="col-md-3 pt-4">
                               <svg width="18" height="18" viewBox="0 0 16 16" class="bi bi-trash dynamic_section_remove text-danger tooltip_new" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Delete Field">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
@@ -255,6 +260,11 @@
       <div class="col-md-3">
       <label for="" class="form-label">Rate<span class="mandatory"></span></label>
       <input id="toolTip`+sequence+`" name="readymaderate[]" type="text" class="form-control form-control-sm">
+      </div>
+
+      <div class="col-md-3">
+      <label for="" class="form-label">Stitch Count</label>
+      <input id="toolTip`+sequence+`" name="stitchcount[]" type="text" class="form-control form-control-sm">
       </div>
 
       <div class="col-md-3 pt-4">
