@@ -182,72 +182,78 @@ class ReadyMadeController extends Controller
     }
 
     public function get_size_rise(){
-       $order_size=$_POST['order_size'];
-       $ReadyMadeRate =  DB::table('tReadyMadeRate')->select('Rate')->where("tReadyMadeRate.ReadyMadeRateUID",$order_size)->get()->all();
-       echo json_encode($ReadyMadeRate[0]);
-   }
-
-   public function savereadymadeorder_details(Request $request){
-
-    $validator = Validator::make($request->all(), [
-       
-        "customername" => 'required',
-        "phoneno" => 'required',
-        "schooluid" => 'required',
-        "orderwise_size.*" => 'required',
-        'order_type_id.*' => 'required',
-        'order_type_count.*' => 'required',
-        'Fixed_price.*' => 'required'
-    ]);
-
-    $user = Auth::user()->id;
-    if ($validator->passes()) 
-    {
-     /*echo '<pre>';print_r($_POST);
-     echo '<pre>';print_r("test");exit;*/
-        $customer_details = array("CustomerName"    =>   $_POST['customername'],
-            "PhoneNo"       =>   $_POST['phoneno'],
-            "WhatsAppNo"    =>   $_POST['phoneno'],
-            "Created_by"    =>   $user);
-
-        $CustomerID=OrderModel::save_customer($customer_details);
-
-        $ReadyMadeOrder_detail = array("CustomerUID" => $CustomerID,
-            "SchoolUID"    =>  $_POST['schooluid'],
-            "CreatedBy"    =>  $user);
-
-        $readymade_orderID=OrderModel::save_ready_made_order($ReadyMadeOrder_detail);
-
-        $order_type_id        = $_POST['order_type_id'];
-        $order_type_count     = $_POST['order_type_count'];
-        $Fixed_price          = $_POST['Fixed_price'];
-        $orderwise_size       = $_POST['orderwise_size'];
-
-        $total_amount=0;
-        foreach ($order_type_id as $key =>$value) {
-
-            $ready_made_order_type_details = array( 
-                "ReadyMadeOrderUID"     => $readymade_orderID,
-                "ReadyMadeOrderType"    => $order_type_id[$key],
-                "ReadyMadeOrder_Qty"    => $order_type_count[$key],
-                "ReadyMadeRateUID"    => $orderwise_size[$key],
-                "ReadyMadePrize"        => $Fixed_price[$key],
-                "Created_by"            => $user
-            );
-
-            $total_amount=$total_amount+($Fixed_price[$key]*$order_type_count[$key]);
-
-            $ordertypeID=OrderModel::save_ready_made_order_type($ready_made_order_type_details);
-        }
-
-        $Order_prize = array('Total_amount' => $total_amount);
-        $order_prize_data = DB::table('tReadyMadeOrder')->where("ReadyMadeOrderUID",$readymade_orderID)->update($Order_prize);
-
-        echo json_encode(['Status'=>0,"totalamount"=>$total_amount,"ReadyMadeOrderUID "=>$readymade_orderID]);exit; 
-
+        $order_size=$_POST['order_size'];
+        $ReadyMadeRate =  DB::table('tReadyMadeRate')->select('Rate')->where("tReadyMadeRate.ReadyMadeRateUID",$order_size)->get()->all();
+        echo json_encode($ReadyMadeRate[0]);
     }
-    return response()->json(['Status'=>1,'error'=>$validator->errors()->all()]);
-}
 
+    public function savereadymadeorder_details(Request $request){
 
+        $validator = Validator::make($request->all(), [
+
+            "customername" => 'required',
+            "phoneno" => 'required',
+            "schooluid" => 'required',
+            "orderwise_size.*" => 'required',
+            'order_type_id.*' => 'required',
+            'order_type_count.*' => 'required',
+            'Fixed_price.*' => 'required'
+        ]);
+
+        $user = Auth::user()->id;
+        if ($validator->passes()) 
+        {
+            $customer_details = array("CustomerName"    =>   $_POST['customername'],
+                "PhoneNo"       =>   $_POST['phoneno'],
+                "WhatsAppNo"    =>   $_POST['phoneno'],
+                "Created_by"    =>   $user);
+
+            $CustomerID=OrderModel::save_customer($customer_details);
+
+            $ReadyMadeOrder_detail = array("CustomerUID" => $CustomerID,
+                "SchoolUID"    =>  $_POST['schooluid'],
+                "CreatedBy"    =>  $user);
+
+            $readymade_orderID=OrderModel::save_ready_made_order($ReadyMadeOrder_detail);
+
+            $order_type_id        = $_POST['order_type_id'];
+            $order_type_count     = $_POST['order_type_count'];
+            $Fixed_price          = $_POST['Fixed_price'];
+            $orderwise_size       = $_POST['orderwise_size'];
+
+            $total_amount=0;
+            foreach ($order_type_id as $key =>$value) {
+
+                $ready_made_order_type_details = array( 
+                    "ReadyMadeOrderUID"     => $readymade_orderID,
+                    "ReadyMadeOrderType"    => $order_type_id[$key],
+                    "ReadyMadeOrder_Qty"    => $order_type_count[$key],
+                    "ReadyMadeRateUID"      => $orderwise_size[$key],
+                    "ReadyMadePrize"        => $Fixed_price[$key],
+                    "Created_by"            => $user
+                );
+
+                $total_amount=$total_amount+($Fixed_price[$key]*$order_type_count[$key]);
+
+                $ordertypeID=OrderModel::save_ready_made_order_type($ready_made_order_type_details);
+
+                $ReadymdeorderRatedtl =ReadymadeModel::getReadymadeRate($orderwise_size[$key]);
+
+                $ReadyMadeRateUID  = $ReadymdeorderRatedtl[0]->ReadyMadeRateUID;
+                $StitchCount  = $ReadymdeorderRatedtl[0]->StitchCount;
+
+                $current_total = array(
+                    "StitchCount"  =>  $StitchCount - $order_type_count[$key] );
+
+                $order_prize_data = DB::table('tReadyMadeRate')->where("ReadyMadeRateUID",$ReadyMadeRateUID)->update($current_total);
+            }
+
+            $Order_prize = array('Total_amount' => $total_amount);
+            $order_prize_data = DB::table('tReadyMadeOrder')->where("ReadyMadeOrderUID",$readymade_orderID)->update($Order_prize);
+
+            echo json_encode(['Status'=>0,"totalamount"=>$total_amount,"ReadyMadeOrderUID "=>$readymade_orderID]);exit; 
+
+        }
+        return response()->json(['Status'=>1,'error'=>$validator->errors()->all()]);
+    }
 }

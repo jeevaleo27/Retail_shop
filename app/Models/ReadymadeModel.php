@@ -28,4 +28,9 @@ class ReadymadeModel extends Model
 
         return $readymade_list;
     }
+
+    Protected function getReadymadeRate($ReadyMadeRateUID){
+        $readymade_list = DB::table('tReadyMadeRate')->select('tReadyMadeRate.*')->where("tReadyMadeRate.ReadyMadeRateUID",$ReadyMadeRateUID)->get()->all();
+        return $readymade_list;
+    }            
 }
