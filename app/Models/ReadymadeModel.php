@@ -32,5 +32,17 @@ class ReadymadeModel extends Model
     Protected function getReadymadeRate($ReadyMadeRateUID){
         $readymade_list = DB::table('tReadyMadeRate')->select('tReadyMadeRate.*')->where("tReadyMadeRate.ReadyMadeRateUID",$ReadyMadeRateUID)->get()->all();
         return $readymade_list;
+    }
+
+    Protected function getreadymadelist(){
+
+        $readymade_list = DB::table('tReadyMadeOrder')->select('tReadyMadeOrder.*','mSchool.School_Name','tCustomer.CustomerName','tCustomer.PhoneNo')->leftjoin('mSchool','mSchool.SchoolUID','=','tReadyMadeOrder.SchoolUID')->leftjoin('tCustomer','tCustomer.CustomerUID','=','tReadyMadeOrder.CustomerUID')->where("tReadyMadeOrder.is_delete",0)->get();
+        return $readymade_list;
+    }
+
+    Protected function getreadymadedtl($readymadeOrderUid){
+
+         $readymade_dtl = DB::table('tReadyMadeOrder')->select('tReadyMadeOrder.*','tReadyMadeOrderDetails.ReadyMadeOrderType','tReadyMadeOrderDetails.ReadyMadeOrder_Qty','tReadyMadeOrderDetails.ReadyMadePrize','tReadyMadeOrderDetails.Size_Material','tReadyMadeOrderDetails.ReadyMadeOrderType_Name')->leftjoin('tReadyMadeOrderDetails','tReadyMadeOrderDetails.ReadyMadeOrderUID','=','tReadyMadeOrder.ReadyMadeOrderUID')->where("tReadyMadeOrder.is_delete",0)->where("tReadyMadeOrder.ReadyMadeOrderUID",$readymadeOrderUid)->get();
+        return $readymade_dtl;
     }            
 }

@@ -60,6 +60,9 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/readdymade_ordertbale', [ReadyMadeController::class, 'readdymade_ordertbale'])->name('readdymade_ordertbale');
     Route::post('/get_size_rise', [ReadyMadeController::class, 'get_size_rise'])->name('get_size_rise');
     Route::post('/savereadymadeorder_details', [ReadyMadeController::class, 'savereadymadeorder_details'])->name('savereadymadeorder_details');
+    Route::get('/readymaadeorder_list', [ReadyMadeController::class, 'readymaadeorder_list'])->name('readymaadeorder_list');
+    Route::post('/get_readymade_dtl', [ReadyMadeController::class, 'get_readymade_dtl'])->name('get_readymade_dtl');
+    Route::post('/delete_readymade_order', [ReadyMadeController::class, 'delete_readymade_order'])->name('delete_readymade_order');
 
 
 });

@@ -188,7 +188,6 @@ class ReadyMadeController extends Controller
     }
 
     public function savereadymadeorder_details(Request $request){
-
         $validator = Validator::make($request->all(), [
 
             "customername" => 'required',
@@ -224,13 +223,19 @@ class ReadyMadeController extends Controller
             $total_amount=0;
             foreach ($order_type_id as $key =>$value) {
 
+                $Size_Material =  DB::table('tReadyMadeRate')->select('Size_Material')->where("tReadyMadeRate.ReadyMadeRateUID",$orderwise_size[$key])->get()->all();
+
+                $ReadyMadeOrderType_Name =  DB::table('mReadyMadeOrderType')->select('ReadyMadeOrderType_Name')->where("mReadyMadeOrderType.ReadyMadeOrderTypeUID",$order_type_id[$key])->get()->all();
+
                 $ready_made_order_type_details = array( 
-                    "ReadyMadeOrderUID"     => $readymade_orderID,
-                    "ReadyMadeOrderType"    => $order_type_id[$key],
-                    "ReadyMadeOrder_Qty"    => $order_type_count[$key],
-                    "ReadyMadeRateUID"      => $orderwise_size[$key],
-                    "ReadyMadePrize"        => $Fixed_price[$key],
-                    "Created_by"            => $user
+                    "ReadyMadeOrderUID"         => $readymade_orderID,
+                    "ReadyMadeOrderType"        => $order_type_id[$key],
+                    "ReadyMadeOrder_Qty"        => $order_type_count[$key],
+                    "ReadyMadeRateUID"          => $orderwise_size[$key],
+                    "ReadyMadePrize"            => $Fixed_price[$key],
+                    "Size_Material"             => $Size_Material[0]->Size_Material,
+                    "ReadyMadeOrderType_Name"   => $ReadyMadeOrderType_Name[0]->ReadyMadeOrderType_Name,
+                    "Created_by"                => $user
                 );
 
                 $total_amount=$total_amount+($Fixed_price[$key]*$order_type_count[$key]);
@@ -255,5 +260,42 @@ class ReadyMadeController extends Controller
 
         }
         return response()->json(['Status'=>1,'error'=>$validator->errors()->all()]);
+    }
+
+    public function readymaadeorder_list(){
+       $this->data['page_number']=7;
+       $this->data['readymadeorderlist']=ReadymadeModel::getreadymadelist();
+       return view('readymade.readymadelist',$this->data); 
+    }
+
+    public function get_readymade_dtl(){
+
+       // $this->data['page_number']=7;
+        $readymadeorderlist=ReadymadeModel::getreadymadedtl(base64_decode($_POST['orderid']));
+
+        $html="<table  class='table datatable_Userlist subchecklist_table  nowrap' style='width:100%;' >
+        <thead>
+        <tr>
+        <th>Order Type</th>
+        <th>Order Size</th>
+        <th>Count</th>
+        <th>Rate</th>
+        </tr>
+        </thead>
+        ";
+        foreach ($readymadeorderlist as $key => $value) {
+           $html.="<tr><td>".$value->ReadyMadeOrderType_Name."</td><td>".$value->Size_Material."</td><td>".$value->ReadyMadeOrder_Qty."</td><td>".$value->ReadyMadePrize."</td></tr>";
+        }
+        $html.="
+        </table>";
+
+        return response()->json(['html'=>$html]);
+    }
+
+    public function delete_readymade_order(){
+
+        $Order_prize = array('is_delete' => 1);
+        $order_prize_data = DB::table('tReadyMadeOrder')->where("ReadyMadeOrderUID", base64_decode($_POST['orderid']))->update($Order_prize);
+        echo json_encode(['Status'=>$order_prize_data]);exit; 
     }
 }
