@@ -64,5 +64,7 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/get_readymade_dtl', [ReadyMadeController::class, 'get_readymade_dtl'])->name('get_readymade_dtl');
     Route::post('/delete_readymade_order', [ReadyMadeController::class, 'delete_readymade_order'])->name('delete_readymade_order');
 
+    Route::post('/getSchoolPrsDtl', [HomeController::class, 'getSchoolPrsDtl'])->name('getSchoolPrsDtl');
+
 
 });

@@ -278,14 +278,16 @@ class ReadyMadeController extends Controller
         <tr>
         <th>Order Type</th>
         <th>Order Size</th>
-        <th>Count</th>
-        <th>Rate</th>
+        <th>Qty</th>
+        <th>Price</th>
         </tr>
         </thead>
         ";
         foreach ($readymadeorderlist as $key => $value) {
            $html.="<tr><td>".$value->ReadyMadeOrderType_Name."</td><td>".$value->Size_Material."</td><td>".$value->ReadyMadeOrder_Qty."</td><td>".$value->ReadyMadePrize."</td></tr>";
         }
+
+        $html.= "<tr><td></td><td></td><td></td><td><b>Total Amount :  ".$readymadeorderlist[0]->Total_amount." </b></td></tr>";
         $html.="
         </table>";
 
