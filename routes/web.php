@@ -8,6 +8,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReadyMadeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,14 +28,14 @@ Route::get('/', function () {
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-/*    Route::get('/', [LoginController::class, 'index'])->name('home');*/
+    /*Route::get('/', [LoginController::class, 'index'])->name('home');*/
 
 
 Route::middleware(['PreventBackHistory'])->group(function(){
     Auth::routes();
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
 
     Route::get('/school', [SchoolController::class, 'index'])->name('school');
     Route::get('/add_school', [SchoolController::class, 'add_school'])->name('add_school');
