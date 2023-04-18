@@ -65,7 +65,7 @@
 			<div class="col-md-3">
 				<label for="roleuid" class="form-label">School Name <span class="mandatory"></span></label>
 				<select class="form-select form-select-sm select2_singleselect"  id="schooluid" name="schooluid">
-					<option value="">Select School</option>
+					<!-- <option value="">Select School</option> -->
 					<?php foreach ($SchoolInfo as $schoolkey => $schoolvalue) { ?>
 						<option value="<?php echo $schoolvalue->SchoolUID; ?>"><?php echo $schoolvalue->School_Name; ?></option>
 					<?php } ?>             
@@ -92,6 +92,7 @@
 <script>
 	$(document).ready(function(){
 		$('.select2_singleselect').select2({});
+		$('#schooluid').trigger('change');
 		loadmultipleselect();
 	});
 
