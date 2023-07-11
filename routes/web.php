@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReadyMadeController;
+use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -34,7 +35,8 @@ Route::get('/', function () {
 Route::middleware(['PreventBackHistory'])->group(function(){
     Auth::routes();
 
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [Firstcontroller::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
 
     Route::get('/school', [SchoolController::class, 'index'])->name('school');
@@ -50,6 +52,12 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/order_stauts_save', [OrderController::class, 'order_stauts_save'])->name('order_stauts_save');
     Route::post('/save_advance_amount', [OrderController::class, 'save_advance_amount'])->name('save_advance_amount');
     Route::post('/delete_stitching_order', [OrderController::class, 'delete_stitching_order'])->name('delete_stitching_order');
+    Route::get('/rohinisilks_order', [OrderController::class, 'rs_order'])->name('rohinisilks_order');
+    Route::post('/rsordertbale', [OrderController::class, 'rs_get_ordertable'])->name('rsordertbale');
+    Route::post('/rs_saveorder_details', [OrderController::class, 'rs_save_order_details'])->name('rs_saveorder_details');
+    Route::post('/save_advance_amount_rs', [OrderController::class, 'save_advance_amount_rs'])->name('save_advance_amount_rs');
+    Route::get('/rohinisilks_orderlist', [OrderController::class, 'rohinisilks_orderlist'])->name('rohinisilks_orderlist');
+    Route::post('/get_rsorder_dtl', [OrderController::class, 'get_rsorder_dtl'])->name('get_rsorder_dtl');
 
 
     Route::get('/readymadesizelist', [ReadyMadeController::class, 'index'])->name('readymadesizelist');
@@ -67,5 +75,13 @@ Route::middleware(['PreventBackHistory'])->group(function(){
 
     Route::post('/getSchoolPrsDtl', [HomeController::class, 'getSchoolPrsDtl'])->name('getSchoolPrsDtl');
 
+    Route::get('/home2', [Firstcontroller::class, 'index_new'])->name('home2');
+
+    Route::get('/product', [Productcontroller::class, 'product'])->name('product');
+    Route::get('/add_product', [Productcontroller::class, 'add_product'])->name('add_product');
+    Route::post('/productsave', [Productcontroller::class, 'productsave'])->name('productsave');
+    Route::get('/edit_product/{id}', [Productcontroller::class, 'edit_product'])->name('edit_product');
+    Route::get('/delete_product_data', [Productcontroller::class, 'delete_product_data'])->name('delete_product_data');
+    /*Route::get('/productdetails', [Productcontroller::class, 'productdetails'])->name('productdetails');*/
 
 });

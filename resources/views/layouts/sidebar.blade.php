@@ -12,7 +12,7 @@
 					<li class="sidebar-header">
 						Pages
 					</li>
-
+					@if(Auth::user()->usertype == 2)
 					<li class="sidebar-item '@if($page_number==1) active @endif'">
 						<a class="sidebar-link" href="{{route('home')}}">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -80,6 +80,50 @@
 							</svg> <span class="align-middle">ReadyMade Order list</span>
 						</a>
 					</li>
+					@elseif( Auth::user()->usertype  == 1)
+
+
+					<li class="sidebar-item '@if($page_number==8) active @endif'">
+						<a class="sidebar-link" href="{{route('home2')}}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+								<g data-name="icons/tabler/chart" transform="translate(0)">
+									<rect data-name="Icons/Tabler/Chart background" width="16" height="16" fill="none"></rect>
+									<path d="M.686,13.257a.686.686,0,0,1-.093-1.365l.093-.006H15.314a.686.686,0,0,1,.093,1.365l-.093.006ZM.394,9.535l-.089-.05a.688.688,0,0,1-.24-.863l.05-.088L3.773,3.048a.684.684,0,0,1,.782-.272l.095.039L7.811,4.4,11.121.257a.687.687,0,0,1,.945-.122L12.142.2,15.8,3.858a.686.686,0,0,1-.893,1.036l-.077-.067L11.713,1.712,8.536,5.685a.684.684,0,0,1-.743.225l-.1-.04L4.578,4.313,1.256,9.294a.684.684,0,0,1-.862.24Z" transform="translate(0 1)" fill="#1e1e1e"></path>
+								</g>
+							</svg> <span class="align-middle">Dashboard</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item '@if($page_number == 9) active @endif'">
+						<a class="sidebar-link" href="{{route('product')}}">
+							<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"></path>
+								<path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"></path>
+								<path fill-rule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"></path>
+							</svg> <span class="align-middle">Product</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item '@if($page_number == 10) active @endif'">
+						<a class="sidebar-link" href="{{route('rohinisilks_order')}}">
+							<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"></path>
+								<path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"></path>
+								<path fill-rule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"></path>
+							</svg> <span class="align-middle">Order Details</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item '@if($page_number == 11) active @endif'">
+						<a class="sidebar-link" href="{{route('rohinisilks_orderlist')}}">
+							<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z"></path>
+								<path fill-rule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z"></path>
+								<path fill-rule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"></path>
+							</svg> <span class="align-middle">Order List</span>
+						</a>
+					</li>
+
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="pages-sign-up.html">
@@ -87,7 +131,8 @@
 						</a>
 					</li>
 
-					<li class="sidebar-item">
+					@endif
+					<!-- <li class="sidebar-item">
 						<a class="sidebar-link" href="pages-blank.html">
 							<i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
 						</a>
@@ -141,20 +186,9 @@
 						<a class="sidebar-link" href="maps-google.html">
 							<i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 
-<!-- 				<div class="sidebar-cta">
-					<div class="sidebar-cta-content">
-						<strong class="d-inline-block mb-2">Upgrade to Pro</strong>
-						<div class="mb-3 text-sm">
-							Are you looking for more components? Check out our premium version.
-						</div>
-						<div class="d-grid">
-							<a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
-						</div>
-					</div>
-				</div> -->
 			</div>
 		</nav>
 
@@ -327,4 +361,4 @@
 						</li>
 					</ul>
 				</div>
-			</nav>
+			</nav>	

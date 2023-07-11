@@ -74,4 +74,26 @@ class OrderModel extends Model
         return $orderUID;
     }
 
+    Protected function save_order_rs($Order_detail){
+        $orderUID =  DB::table('mOrderRs')->insertGetId($Order_detail);
+        return $orderUID;
+    }
+
+    Protected function save_product_rs($order_type_details){
+
+        $orderUID =  DB::table('mOrderDetailsRs')->insertGetId($order_type_details);
+        return $orderUID;
+    }
+
+    Protected function get_rsorderlist(){
+
+        $rsorderlist = DB::table('mOrderRs')->select('mOrderRs.*','tCustomer.CustomerName','tCustomer.PhoneNo')->leftjoin('tCustomer','tCustomer.CustomerUID','=','mOrderRs.CustomerUID')->where("mOrderRs.is_delete",0)->get();
+        return $rsorderlist;
+    }
+
+    Protected function getrsreadymadedtl($OrderUID){
+
+         $orderdtllist = DB::table('mOrderRs')->select('mOrderRs.*','mOrderDetailsRs.ProductUID','mOrderDetailsRs.Order_Qty','mOrderDetailsRs.Prize','mProduct.ProducrName','mProduct.Product_Code')->leftjoin('mOrderDetailsRs','mOrderDetailsRs.OrderUID','=','mOrderRs.OrderUID')->leftjoin('mProduct','mProduct.ProductUID','=','mOrderDetailsRs.ProductUID')->where("mOrderRs.is_delete",0)->where("mOrderRs.OrderUID",$OrderUID)->get();
+        return $orderdtllist;
+    }  
 }

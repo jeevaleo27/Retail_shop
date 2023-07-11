@@ -6,7 +6,6 @@ use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
-//use App\Models;
 
 class SchoolController extends Controller
 {
@@ -47,7 +46,6 @@ class SchoolController extends Controller
      */
     public function schoolsave(Request $request)
     {
-/*echo '<pre>';print_r($request->schoolid);exit;*/
         $validator = Validator::make($request->all(), [
             'schoolname' => 'required',
 
