@@ -106,7 +106,59 @@ class Productcontroller extends Controller
     public function productdetails(){
 
         $this->data['page_number']=10;
-        //$this->data['product_details']=Product::get_product(base64_decode($id));
         return view('product.product_add',$this->data);
+    }
+
+    public function rohinisilks_addstock(){
+        $this->data['page_number']=12;
+        $this->data['rsproducrDtl']=Product::getproduct();
+        $this->data['rsstockdtl']=Product::getstockdtl();
+        return view('product.add_stock',$this->data);
+    }
+
+    public function rs_stocksave(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'productid' => 'required',
+            'productcount'   => 'required',
+        ]);
+        $user = Auth::user()->id;
+
+        if ($validator->passes()) {
+            $productid=$_POST['productid'];
+            $productcount=$_POST['productcount'];
+
+            $productDtl = Product::get_product($productid);
+            $productpriceDtl = Product::get_productprisedtl($productid);
+            $TotalStock = ($productpriceDtl->Product_Qty+(int)$productcount);
+            $stock_array = array( 
+                "ProducrName"    =>   $productDtl->ProducrName,
+                "Product_Code"   =>   $productDtl->Product_Code,
+                "OldStock"       =>   $productpriceDtl->Product_Qty,
+                "NewStock"       =>   $productcount,
+                "TotalStock"     =>   $TotalStock,
+                "Created_by"     =>   $user
+            );
+
+            $productdtlUID=Product::savestockdetail($stock_array);
+
+            $updateproductDtlAry=array(
+                "Product_Qty"  =>$TotalStock, 
+            );
+
+            $product_details=Product::update_product_detail($productid,$updateproductDtlAry);
+
+            return response()->json(['Status'=>0,'success'=>'Product Added Successfully.']);
+
+        }
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    public function validationnew(array $request)
+    {
+        $request->validate([
+            'productid' => 'required|number',
+            'productcode' => 'required|number',
+        ]);
     }
 }

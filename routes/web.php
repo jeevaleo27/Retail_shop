@@ -82,6 +82,7 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/productsave', [Productcontroller::class, 'productsave'])->name('productsave');
     Route::get('/edit_product/{id}', [Productcontroller::class, 'edit_product'])->name('edit_product');
     Route::get('/delete_product_data', [Productcontroller::class, 'delete_product_data'])->name('delete_product_data');
-    /*Route::get('/productdetails', [Productcontroller::class, 'productdetails'])->name('productdetails');*/
+    Route::get('/rohinisilks_addstock', [Productcontroller::class, 'rohinisilks_addstock'])->name('rohinisilks_addstock');
+    Route::post('/rs_stocksave', [Productcontroller::class, 'rs_stocksave'])->name('rs_stocksave');
 
 });

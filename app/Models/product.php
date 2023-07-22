@@ -71,7 +71,6 @@ class Product extends Model
     Protected function saveproductdetail($productDtlAry){
 
         $inserted_productDtl =  DB::table('mProductDetails')->insertGetId($productDtlAry);
-
         return $inserted_productDtl;
     }
 
@@ -79,7 +78,17 @@ class Product extends Model
     Protected function update_product_detail($id,$updateproductDtlAry){
 
         $updated_product_dtl = DB::table('mProductDetails')->where("ProductUID",$id)->update($updateproductDtlAry);
-
         return $updated_product_dtl;
+    }
+
+    Protected function savestockdetail($productDtlAry){
+
+        $inserted_stockDtl =  DB::table('tStockEntryRs')->insertGetId($productDtlAry);
+        return $inserted_stockDtl;
+    }
+
+    Protected function getstockdtl(){
+        $stockdtl = DB::table('tStockEntryRs')->select('*','users.name')->leftjoin("users","users.id" ,"=","tStockEntryRs.Created_by")->get();
+        return $stockdtl;
     }
 }
