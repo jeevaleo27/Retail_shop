@@ -105,11 +105,22 @@
                                   <label for="" class="form-label">Rate<span class="mandatory"></span></label>
                                   <input id="toolTip" name="productrate" type="text" class="form-control form-control-sm" value="@if(isset($product_prize_details)){{$product_prize_details->Prize}}@endif">
                                 </div>
-
+                                @if(!isset($product_prize_details))
                                 <div class="col-md-3">
                                   <label for="" class="form-label">Count</label>
                                   <input id="toolTip" name="productcount" type="text" class="form-control form-control-sm" value="@if(isset($product_prize_details)){{$product_prize_details->Product_Qty}}@endif">
                                 </div>
+                                @elseif(isset($product_prize_details) && $product_prize_details->Product_Qty == 0)
+                                <div class="col-md-3">
+                                  <label for="" class="form-label">Count</label>
+                                  <input id="toolTip" name="productcount" type="text" class="form-control form-control-sm" value="@if(isset($product_prize_details)){{$product_prize_details->Product_Qty}}@endif">
+                                </div>
+                                @else
+                                <div class="col-md-3">
+                                  <label for="" class="form-label" style="margin-top: 30px;font-size: 20px"><b>Count : </label> <snap> @if(isset($product_prize_details)){{$product_prize_details->Product_Qty}}@endif </b></snap>
+                                  <input id="toolTip" name="productcount" type="hidden" class="form-control form-control-sm" value="@if(isset($product_prize_details)){{$product_prize_details->Product_Qty}}@endif">
+                                </div>
+                                @endif
                               </div>
                             </div>
                           </form>
