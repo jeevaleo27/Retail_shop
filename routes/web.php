@@ -58,7 +58,7 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::post('/save_advance_amount_rs', [OrderController::class, 'save_advance_amount_rs'])->name('save_advance_amount_rs');
     Route::get('/rohinisilks_orderlist', [OrderController::class, 'rohinisilks_orderlist'])->name('rohinisilks_orderlist');
     Route::post('/get_rsorder_dtl', [OrderController::class, 'get_rsorder_dtl'])->name('get_rsorder_dtl');
-
+    Route::get('/incoice/{id}', [OrderController::class, 'downloadincoice'])->name('incoice');
 
     Route::get('/readymadesizelist', [ReadyMadeController::class, 'index'])->name('readymadesizelist');
     Route::get('/readymade_size_add', [ReadyMadeController::class, 'add_readymade_size'])->name('readymade_size_add');
@@ -84,5 +84,6 @@ Route::middleware(['PreventBackHistory'])->group(function(){
     Route::get('/delete_product_data', [Productcontroller::class, 'delete_product_data'])->name('delete_product_data');
     Route::get('/rohinisilks_addstock', [Productcontroller::class, 'rohinisilks_addstock'])->name('rohinisilks_addstock');
     Route::post('/rs_stocksave', [Productcontroller::class, 'rs_stocksave'])->name('rs_stocksave');
+   
 
 });

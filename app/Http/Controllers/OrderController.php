@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -426,4 +427,90 @@ class OrderController extends Controller
 
        return response()->json(['html'=>$html]);
    }
+
+
+    public function downloadincoice($id)
+    {
+        $users =Auth::user()->id;
+        $rsorderdetaillist=OrderModel::getrsreadymadedtl(base64_decode($id));
+        $data["value"]=array( "OrderUID" =>$rsorderdetaillist[0]->OrderUID,
+            "Total_amount" => $rsorderdetaillist[0]->Total_amount,
+            "Current_date"  => date('d-m-Y', strtotime(date('Y-m-d H:i:s'))),
+            "Order_date"=>  date('d-m-Y', strtotime($rsorderdetaillist[0]->CreatedDateTime)),
+            "billvalaue" => $rsorderdetaillist,
+            "word_amount" =>  $this->numberToWord($rsorderdetaillist[0]->Total_amount)
+        );
+
+        $pdf = PDF::loadView('product.bill', $data);
+        return $pdf->download($rsorderdetaillist[0]->OrderUID."-".$rsorderdetaillist[0]->CustomerName.'.pdf');
+    }
+
+
+
+    public function inv(){
+          $this->data['page_number']=11;
+       $this->data['rsorderlist']=OrderModel::get_rsorderlist();
+       return view('product.invoice',$this->data);
+    }
+
+
+     public function numberToWord($num = '')
+    {
+        $num    = ( string ) ( ( int ) $num );
+        
+        if( ( int ) ( $num ) && ctype_digit( $num ) )
+        {
+            $words  = array( );
+             
+            $num    = str_replace( array( ',' , ' ' ) , '' , trim( $num ) );
+             
+            $list1  = array('','one','two','three','four','five','six','seven',
+                'eight','nine','ten','eleven','twelve','thirteen','fourteen',
+                'fifteen','sixteen','seventeen','eighteen','nineteen');
+             
+            $list2  = array('','ten','twenty','thirty','forty','fifty','sixty',
+                'seventy','eighty','ninety','hundred');
+             
+            $list3  = array('','thousand','million','billion','trillion',
+                'quadrillion','quintillion','sextillion','septillion',
+                'octillion','nonillion','decillion','undecillion',
+                'duodecillion','tredecillion','quattuordecillion',
+                'quindecillion','sexdecillion','septendecillion',
+                'octodecillion','novemdecillion','vigintillion');
+             
+            $num_length = strlen( $num );
+            $levels = ( int ) ( ( $num_length + 2 ) / 3 );
+            $max_length = $levels * 3;
+            $num    = substr( '00'.$num , -$max_length );
+            $num_levels = str_split( $num , 3 );
+             
+            foreach( $num_levels as $num_part )
+            {
+                $levels--;
+                $hundreds   = ( int ) ( $num_part / 100 );
+                $hundreds   = ( $hundreds ? ' ' . $list1[$hundreds] . ' Hundred' . ( $hundreds == 1 ? '' : 's' ) . ' ' : '' );
+                $tens       = ( int ) ( $num_part % 100 );
+                $singles    = '';
+                 
+                if( $tens < 20 ) { $tens = ( $tens ? ' ' . $list1[$tens] . ' ' : '' ); } else { $tens = ( int ) ( $tens / 10 ); $tens = ' ' . $list2[$tens] . ' '; $singles = ( int ) ( $num_part % 10 ); $singles = ' ' . $list1[$singles] . ' '; } $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_part ) ) ? ' ' . $list3[$levels] . ' ' : '' ); } $commas = count( $words ); if( $commas > 1 )
+            {
+                $commas = $commas - 1;
+            }
+             
+            $words  = implode( ', ' , $words );
+             
+            $words  = trim( str_replace( ' ,' , ',' , ucwords( $words ) )  , ', ' );
+            if( $commas )
+            {
+                $words  = str_replace( ',' , ' and' , $words );
+            }
+             
+            return $words;
+        }
+        else if( ! ( ( int ) $num ) )
+        {
+            return 'Zero';
+        }
+        return '';
+    }
 }

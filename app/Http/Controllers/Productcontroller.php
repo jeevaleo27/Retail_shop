@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Validator;
+use PDF;
 
 class Productcontroller extends Controller
 {

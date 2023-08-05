@@ -93,7 +93,7 @@ class OrderModel extends Model
 
     Protected function getrsreadymadedtl($OrderUID){
 
-         $orderdtllist = DB::table('mOrderRs')->select('mOrderRs.*','mOrderDetailsRs.ProductUID','mOrderDetailsRs.Order_Qty','mOrderDetailsRs.Prize','mProduct.ProducrName','mProduct.Product_Code')->leftjoin('mOrderDetailsRs','mOrderDetailsRs.OrderUID','=','mOrderRs.OrderUID')->leftjoin('mProduct','mProduct.ProductUID','=','mOrderDetailsRs.ProductUID')->where("mOrderRs.is_delete",0)->where("mOrderRs.OrderUID",$OrderUID)->get();
+         $orderdtllist = DB::table('mOrderRs')->select('mOrderRs.*','mOrderDetailsRs.ProductUID','mOrderDetailsRs.Order_Qty','mOrderDetailsRs.Prize','mProduct.ProducrName','mProduct.Product_Code','tCustomer.CustomerName')->leftjoin('mOrderDetailsRs','mOrderDetailsRs.OrderUID','=','mOrderRs.OrderUID')->leftjoin('mProduct','mProduct.ProductUID','=','mOrderDetailsRs.ProductUID')->leftjoin('tCustomer','tCustomer.CustomerUID','=','mOrderRs.CustomerUID')->where("mOrderRs.is_delete",0)->where("mOrderRs.OrderUID",$OrderUID)->get();
         return $orderdtllist;
     }  
 }
