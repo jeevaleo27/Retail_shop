@@ -20,7 +20,7 @@ class Firstcontroller extends Controller
 
         if(Auth::user()->usertype == 1){
 
-            return redirect('/home2');
+            return redirect('/product');
         }else{
 
            return redirect('/dashboard');

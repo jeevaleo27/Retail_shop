@@ -81,7 +81,6 @@
 									<th style=" text-align: center;" >Customer Name</th>
 									<th style=" text-align: center;" >Phone Number</th>
 									<th style=" text-align: center;" >Order Date</th>
-									<th style=" text-align: center;" >Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -92,16 +91,6 @@
 									<td style=" text-align: center;" >{{$item->CustomerName}}</td>
 									<td style=" text-align: center;" >{{$item->PhoneNo}}</td>
 									<td style=" text-align: center;" >{{$item->CreatedDateTime}}</td>
-									<td style=" text-align: center;" >
-										<!-- <a class="dropdown-item delete_order_data" data-orderid="{{base64_encode($item->OrderUID)}}" id="delete_order" style="color:red;">
-											<svg width="20" height="20" viewBox="0 0 16 16" class="bi bi-trash"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
-												<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
-											</svg><span class="ms-2">Delete data</span>
-										</a> -->
-
-										<a href="{{route('incoice',base64_encode($item->OrderUID))}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download align-middle me-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download PDF</a>
-									</td>
 								</tr>
 								@endforeach
 							</tbody>
@@ -122,7 +111,7 @@
 
 	var _token = $('#_token').val();
 	$(document).ready(function () {
-		$('#stitching_list_table').DataTable();
+		$('#stitching_list_table').DataTable({colReorder: true,order: []});
 	});
 
 	$('.delete_order_data').click(function(e){

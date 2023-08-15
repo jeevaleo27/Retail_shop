@@ -87,7 +87,7 @@ class OrderModel extends Model
 
     Protected function get_rsorderlist(){
 
-        $rsorderlist = DB::table('mOrderRs')->select('mOrderRs.*','tCustomer.CustomerName','tCustomer.PhoneNo')->leftjoin('tCustomer','tCustomer.CustomerUID','=','mOrderRs.CustomerUID')->where("mOrderRs.is_delete",0)->get();
+        $rsorderlist = DB::table('mOrderRs')->select('mOrderRs.*','tCustomer.CustomerName','tCustomer.PhoneNo')->leftjoin('tCustomer','tCustomer.CustomerUID','=','mOrderRs.CustomerUID')->where("mOrderRs.is_delete",0)->orderBy('mOrderRs.CreatedDateTime','desc')->get();
         return $rsorderlist;
     }
 

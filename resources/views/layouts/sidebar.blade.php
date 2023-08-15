@@ -83,7 +83,7 @@
 					@elseif( Auth::user()->usertype  == 1)
 
 
-					<li class="sidebar-item '@if($page_number==8) active @endif'">
+					<!-- <li class="sidebar-item '@if($page_number==8) active @endif'">
 						<a class="sidebar-link" href="{{route('home2')}}">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
 								<g data-name="icons/tabler/chart" transform="translate(0)">
@@ -92,7 +92,7 @@
 								</g>
 							</svg> <span class="align-middle">Dashboard</span>
 						</a>
-					</li>
+					</li> -->
 
 					<li class="sidebar-item '@if($page_number == 9) active @endif'">
 						<a class="sidebar-link" href="{{route('product')}}">

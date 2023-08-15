@@ -88,7 +88,8 @@ class Product extends Model
     }
 
     Protected function getstockdtl(){
-        $stockdtl = DB::table('tStockEntryRs')->select('*','users.name')->leftjoin("users","users.id" ,"=","tStockEntryRs.Created_by")->get();
+        
+        $stockdtl = DB::table('tStockEntryRs')->select('*','users.name')->leftjoin("users","users.id" ,"=","tStockEntryRs.Created_by")->orderBy('tStockEntryRs.StockEntryRsUID','desc')->get();
         return $stockdtl;
     }
 }

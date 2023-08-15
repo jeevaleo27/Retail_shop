@@ -72,8 +72,8 @@
 							<thead>
 								<tr>
 									<th style=" text-align: center;" >Order Number</th>
-									<th style=" text-align: center;" >Customer Name</th>
-									<th style=" text-align: center;" >School Name</th>
+									<th style=" text-align: center;" >Product Name</th>
+									<th style=" text-align: center;" >Product Code</th>
 									<th style=" text-align: center;" >Action</th>
 								</tr>
 							</thead>

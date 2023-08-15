@@ -399,6 +399,8 @@ class OrderController extends Controller
     public function rohinisilks_orderlist(){
        $this->data['page_number']=11;
        $this->data['rsorderlist']=OrderModel::get_rsorderlist();
+
+       //echo '<pre>';print_r($this->data);exit;
        return view('order.rs_orderlist',$this->data); 
     }
 
@@ -420,8 +422,10 @@ class OrderController extends Controller
         foreach ($rsorderdetaillist as $key => $value) {
            $html.="<tr><td>".$value->ProducrName."</td><td>".$value->Product_Code."</td><td>".$value->Order_Qty."</td><td>".$value->Prize."</td></tr>";
        }
+       $orderUID = $rsorderdetaillist[0]->OrderUID;
+       $href = url()->current().'../../incoice/'.base64_encode($orderUID);
 
-       $html.= "<tr><td><b>Total Amount :  ".$rsorderdetaillist[0]->Total_amount." </b></td><td><b>Total Amount :  ".$rsorderdetaillist[0]->Advance_Amount." </b></td><td></td><td><b>Total Amount : <span  style='color:red'>  ".($rsorderdetaillist[0]->Total_amount - $rsorderdetaillist[0]->Advance_Amount)." </span></b></td></tr>";
+       $html.= "<tr><td><b>Total Amount :  ".$rsorderdetaillist[0]->Total_amount." </b></td><td><b>Total Amount :  ".$rsorderdetaillist[0]->Advance_Amount." </b></td><td></td><td><b>Total Amount : <span  style='color:red'>  ".($rsorderdetaillist[0]->Total_amount - $rsorderdetaillist[0]->Advance_Amount)."     </span></b> <span><a href=$href>      <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-download align-middle me-2'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='7 10 12 15 17 10'></polyline><line x1='12' y1='15' x2='12' y2='3'></line></svg>Download PDF</a></span></td></tr>";
        $html.="
        </table>";
 
@@ -441,6 +445,14 @@ class OrderController extends Controller
             "word_amount" =>  $this->numberToWord($rsorderdetaillist[0]->Total_amount)
         );
 
+        
+
+        /*InvoiceUID  
+        OrderUID
+        Created_By*/
+
+      /* $incoiceid =  DB::table('tInvouce_rs')->getPdo()->lastInsertId();
+echo '<pre>';print_r($incoiceid);exit;*/
         $pdf = PDF::loadView('product.bill', $data);
         return $pdf->download($rsorderdetaillist[0]->OrderUID."-".$rsorderdetaillist[0]->CustomerName.'.pdf');
     }

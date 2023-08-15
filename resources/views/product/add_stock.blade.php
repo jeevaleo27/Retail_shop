@@ -185,7 +185,7 @@
 <script>
 
   $(document).ready(function () {
-    var Stock_Table =  $('#stock_table').DataTable();
+    var Stock_Table =  $('#stock_table').DataTable({colReorder: true,order: []});
     $('.datatable_search').keyup(function(){
       Stock_Table.search($(this).val()).draw();
     })
